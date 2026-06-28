@@ -9,9 +9,8 @@
         <!-- Download Bulan Berjalan -->
         <div class="space-y-2 bg-purple-50/50 p-3 rounded-2xl border border-purple-100">
             <p class="text-[10px] font-black text-purple-800 uppercase tracking-wider">📄 Dokumen Bulan Ini Berjalan</p>
-            <div class="grid grid-cols-2 gap-2">
-                <button type="button" onclick="downloadCSVBulanIni()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-2.5 rounded-xl text-[10px] flex justify-center items-center gap-1 cursor-pointer btn-press">Excel (CSV) 📊</button>
-                <button type="button" onclick="downloadPDFBulanIni()" class="bg-red-600 hover:bg-red-700 text-white font-bold p-2.5 rounded-xl text-[10px] flex justify-center items-center gap-1 cursor-pointer btn-press">Dokumen PDF 📄</button>
+            <div class="grid grid-cols-1 gap-2">
+                <button type="button" onclick="downloadCSVBulanIni()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-3 rounded-xl text-xs flex justify-center items-center gap-2 cursor-pointer btn-press shadow-sm">⬇️ Download Excel (CSV)</button>
             </div>
         </div>
 

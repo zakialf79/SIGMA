@@ -13,9 +13,8 @@ function bukaArsipBulanan() {
     globalState.arsipBulanList.forEach(bulan => {
         html += `<div class="bg-purple-50 border border-purple-100 p-3 rounded-2xl flex flex-col gap-2 shadow-sm">
             <span class="font-black text-purple-900 text-xs">${bulan}</span>
-            <div class="grid grid-cols-2 gap-1.5">
-                <button onclick="downloadCSVData('${bulan}')" class="bg-emerald-600 text-white px-2 py-1.5 rounded-xl text-[9px] font-bold shadow text-center cursor-pointer btn-press">Excel (CSV)</button>
-                <button onclick="downloadPDFData('${bulan}')" class="bg-red-600 text-white px-2 py-1.5 rounded-xl text-[9px] font-bold shadow text-center cursor-pointer btn-press">Dokumen PDF</button>
+            <div class="grid grid-cols-1 gap-1.5">
+                <button onclick="downloadCSVData('${bulan}')" class="w-full bg-emerald-600 text-white px-2 py-2 rounded-xl text-[10px] font-bold shadow text-center cursor-pointer btn-press flex justify-center items-center gap-1">⬇️ Download Excel (CSV)</button>
             </div>
         </div>`;
     });
@@ -90,88 +89,4 @@ function generateCSV(dataArray, filename) {
     document.body.removeChild(link);
 
     showToast(`${filename}.csv berhasil didownload!`, '📊');
-}
-
-// ============================================
-// DOWNLOAD PDF
-// ============================================
-
-function downloadPDFBulanIni() {
-    window.print();
-}
-
-async function downloadPDFData(bulanKunci) {
-    try {
-        const res = await fetch(`${API_URL}?action=get_arsip_bulan&bulan=${encodeURIComponent(bulanKunci)}`);
-        const targetData = await res.json();
-
-        let htmlContent = `
-            <!DOCTYPE html>
-            <html lang="id">
-            <head>
-                <title>Arsip ${bulanKunci}</title>
-                <style>
-                    body { font-family: sans-serif; padding: 20px; }
-                    table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px; }
-                    th, td { border: 1px solid #ddd; padding: 8px; }
-                    th { background-color: #eff6ff; text-align: left; }
-                    h2 { color: #0B4CA1; margin: 0; text-transform: uppercase; }
-                    p { color: #555; font-size: 12px; margin-top: 5px; }
-                </style>
-            </head>
-            <body onload="setTimeout(() => { window.print(); window.close(); }, 500);">
-                <div style="text-align:center; padding-bottom:15px; border-bottom:2px solid #000;">
-                    <h2>Laporan Buku Kas Bulan ${bulanKunci}</h2>
-                    <p>SIGMA — Sistem Integrasi Gudang dan Manajemen Keuangan</p>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tgl</th>
-                            <th>Keterangan</th>
-                            <th style="text-align:right;">Debet (Rp)</th>
-                            <th style="text-align:right;">Kredit (Rp)</th>
-                            <th style="text-align:right;">Saldo (Rp)</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
-
-        let runningSaldo = 0;
-        let totalDebet = 0;
-        let totalKredit = 0;
-        targetData.forEach(row => {
-            let dbt = parseInt(row.debet) || 0;
-            let krd = parseInt(row.kredit) || 0;
-            runningSaldo += (dbt - krd);
-            totalDebet += dbt;
-            totalKredit += krd;
-            htmlContent += `<tr>
-                <td style="text-align:center;">${row.tgl}</td>
-                <td><strong>${row.ket}</strong></td>
-                <td style="text-align:right; color:green;">${dbt > 0 ? dbt.toLocaleString('id-ID') : ''}</td>
-                <td style="text-align:right; color:red;">${krd > 0 ? krd.toLocaleString('id-ID') : ''}</td>
-                <td style="text-align:right; font-weight:bold;">${runningSaldo.toLocaleString('id-ID')}</td>
-            </tr>`;
-        });
-        
-        htmlContent += `<tr style="background-color:#eff6ff; font-weight:bold;">
-            <td colspan="2" style="text-align:right;">TOTAL:</td>
-            <td style="text-align:right; color:green;">${totalDebet.toLocaleString('id-ID')}</td>
-            <td style="text-align:right; color:red;">${totalKredit.toLocaleString('id-ID')}</td>
-            <td style="text-align:right;">${runningSaldo.toLocaleString('id-ID')}</td>
-        </tr>`;
-
-        htmlContent += '</tbody></table></body></html>';
-
-        let printWin = window.open('', '_blank');
-        if (printWin) {
-            printWin.document.open();
-            printWin.document.write(htmlContent);
-            printWin.document.close();
-        } else {
-            showToast('Pop-up terblokir! Izinkan pop-up untuk cetak PDF.', '⚠️', 4000);
-        }
-    } catch (err) {
-        showToast('Gagal membuat PDF arsip!', '❌');
-    }
 }

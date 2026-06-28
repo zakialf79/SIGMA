@@ -1,11 +1,9 @@
 <!-- Modal Settings / Pengaturan Tampilan -->
-<div id="modalSettings" class="fixed inset-0 z-50 hidden flex items-end sm:items-center justify-center p-4 sm:p-0">
-    <div class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity opacity-0 modal-overlay" onclick="closeModal('modalSettings')"></div>
-
-    <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden transform translate-y-full sm:translate-y-0 sm:scale-95 transition-all duration-300 z-10 modal-content border border-gray-100 flex flex-col max-h-[90vh]">
+<div id="modalSettings" class="fixed inset-0 z-[80] hidden bg-black/60 items-center justify-center p-4 backdrop-blur-sm modal-overlay">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl relative flex flex-col max-h-[90vh] m-2 modal-content">
         
         <!-- Header -->
-        <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 sticky top-0 z-10">
+        <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 rounded-t-3xl sticky top-0 z-10">
             <h2 class="text-sm font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
                 ⚙️ Pengaturan Tampilan
             </h2>

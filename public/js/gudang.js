@@ -76,6 +76,19 @@ async function editManualStok(namaBaku) {
 }
 
 // ============================================
+// HAPUS JENIS BAHAN BAKU
+// ============================================
+
+async function hapusJenisBahanBaku(namaBaku) {
+    const ok = await customConfirm(`Yakin ingin MENGHAPUS item "${namaBaku}" dari daftar gudang?\n\nPeringatan: Data yang dihapus tidak bisa dikembalikan!`, '🗑️', 'Ya, Hapus');
+    if (ok) {
+        delete globalState.databaseStok[namaBaku];
+        kirimStateKeMySQL(`🗑️ Hapus Bahan Baku: ${namaBaku}`);
+        updateVisualStok();
+    }
+}
+
+// ============================================
 // UPDATE VISUAL STOK GUDANG
 // ============================================
 
@@ -107,12 +120,19 @@ function updateVisualStok() {
 
     for (const [barang, qty] of Object.entries(globalState.databaseStok)) {
         let satuan = (barang === 'Gas') ? 'Tbg' : 'Kg';
+        
+        let tombolHapus = '';
+        if (!['Kulit Mentah', 'Minyak', 'Gas'].includes(barang)) {
+            tombolHapus = `<button type="button" onclick="hapusJenisBahanBaku('${barang}')" class="text-[9px] bg-red-50 text-red-600 border border-red-200 px-2 py-1.5 rounded-xl shadow-sm cursor-pointer btn-press hover:bg-red-100 transition-colors font-bold ml-0.5" title="Hapus Item">❌</button>`;
+        }
+
         htmlList += `<div class="flex justify-between items-center bg-gray-50 p-2.5 rounded-xl border border-gray-200">
             <span class="font-semibold text-gray-800">${barang}</span>
-            <div class="flex items-center gap-2">
-                <span class="font-black text-indigo-700 w-12 text-right">${qty} <span class="text-[9px] text-gray-400 font-normal">${satuan}</span></span>
+            <div class="flex items-center gap-1">
+                <span class="font-black text-indigo-700 w-12 text-right mr-1">${qty} <span class="text-[9px] text-gray-400 font-normal">${satuan}</span></span>
                 <button type="button" onclick="closeModal('modalGudang'); setTimeout(() => bukaFormKredit('${barang}'), 300);" class="text-[9px] bg-indigo-600 text-white px-2.5 py-1.5 rounded-xl shadow-sm cursor-pointer btn-press font-bold hover:bg-indigo-700 transition-colors">Beli</button>
                 <button type="button" onclick="editManualStok('${barang}')" class="text-[9px] bg-white text-gray-600 border border-gray-300 px-2.5 py-1.5 rounded-xl shadow-sm cursor-pointer btn-press hover:bg-gray-100 transition-colors">Koreksi</button>
+                ${tombolHapus}
             </div>
         </div>`;
 
