@@ -83,9 +83,20 @@ function updateVisualStok() {
     document.getElementById('totalPakaiMinyak').innerText = globalState.akumulasiPakai.minyak;
     document.getElementById('totalPakaiGas').innerText = globalState.akumulasiPakai.gas;
 
-    // Render daftar lengkap stok di modal gudang & siapkan opsi plastik
+    // Render daftar lengkap stok di modal gudang & siapkan opsi
     let htmlList = '';
-    let opsiPlastik = '';
+    
+    let opsiKategori = `
+        <option value="Kulit Mentah">🥩 Kulit Mentah</option>
+        <option value="Minyak">💧 Minyak Goreng</option>
+        <option value="Gas">🔥 Gas Tabung</option>
+        <option value="Plastik 9x16">🛍️ Plastik 9x16</option>
+        <option value="Plastik 8x13">🛍️ Plastik 8x13</option>
+        <option value="Plastik 35x55">🛍️ Plastik 35x55</option>
+        <option value="Ziplock 20x29">🛍️ Ziplock 20x29</option>
+    `;
+
+    let defaultKategori = ['Kulit Mentah', 'Minyak', 'Gas', 'Plastik 9x16', 'Plastik 8x13', 'Plastik 35x55', 'Ziplock 20x29'];
 
     for (const [barang, qty] of Object.entries(globalState.databaseStok)) {
         let satuan = (barang === 'Gas') ? 'Tbg' : 'Kg';
@@ -97,17 +108,20 @@ function updateVisualStok() {
             </div>
         </div>`;
 
-        if (barang !== 'Kulit Mentah' && barang !== 'Minyak' && barang !== 'Gas') {
-            opsiPlastik += `<option value="${barang}">${barang}</option>`;
+        if (!defaultKategori.includes(barang)) {
+            opsiKategori += `<option value="${barang}">📦 ${barang}</option>`;
         }
     }
+    
+    opsiKategori += `<option value="Lainnya">✏️ Lainnya</option>`;
+
     document.getElementById('listStokLengkap').innerHTML = htmlList;
 
-    // Update dropdown kredit ukuran plastik jika element ada
-    const selectPlastik = document.getElementById('kreditUkuranPlastik');
-    if (selectPlastik) {
-        opsiPlastik += `<option value="__custom__">➕ Tambah Jenis Lainnya...</option>`;
-        selectPlastik.innerHTML = opsiPlastik;
+    const selectKategori = document.getElementById('kreditKategori');
+    if (selectKategori) {
+        let currKat = selectKategori.value;
+        selectKategori.innerHTML = opsiKategori;
+        if(opsiKategori.includes(`"${currKat}"`)) selectKategori.value = currKat;
     }
 
     // Render histori gudang

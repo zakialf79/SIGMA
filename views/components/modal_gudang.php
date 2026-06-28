@@ -16,12 +16,12 @@
                         <input type="number" id="prodBahanKeluar" placeholder="Kg" step="any" class="w-full p-2 border border-indigo-200 rounded-xl bg-white text-xs font-bold text-center focus:outline-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-[9px] font-black text-gray-500 uppercase tracking-wider mb-1 text-center">Gas</label>
-                        <input type="number" id="prodGasKeluar" placeholder="Tbg" step="any" class="w-full p-2 border border-indigo-200 rounded-xl bg-white text-xs font-bold text-center focus:outline-indigo-500">
-                    </div>
-                    <div>
                         <label class="block text-[9px] font-black text-gray-500 uppercase tracking-wider mb-1 text-center">Minyak</label>
                         <input type="number" id="prodMinyakKeluar" placeholder="Kg" step="any" class="w-full p-2 border border-indigo-200 rounded-xl bg-white text-xs font-bold text-center focus:outline-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-gray-500 uppercase tracking-wider mb-1 text-center">Gas</label>
+                        <input type="number" id="prodGasKeluar" placeholder="Tbg" step="any" class="w-full p-2 border border-indigo-200 rounded-xl bg-white text-xs font-bold text-center focus:outline-indigo-500">
                     </div>
                 </div>
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 text-xs font-black rounded-xl cursor-pointer shadow transition-all tracking-wider uppercase btn-press">SIMPAN PEMAKAIAN BAHAN</button>

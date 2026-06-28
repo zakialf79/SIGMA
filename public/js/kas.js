@@ -27,13 +27,13 @@ function lanjutFormDebet(metode) {
     document.getElementById('debetMetodePenjualan').value = metode;
     const bKonsinyasi = document.getElementById('blokKonsinyasi');
     const bLangsung = document.getElementById('blokBayarLangsung');
-    const wOngkir = document.getElementById('wrapperDebetOngkir');
+
 
     // Reset form
     document.getElementById('debetQty').value = '';
     document.getElementById('debetHargaSatuan').value = '';
-    if (document.getElementById('debetOngkir')) document.getElementById('debetOngkir').value = '';
     document.getElementById('debetTotalUangVisual').value = '';
+    document.getElementById('debetKeteranganTambahan').value = '';
 
     populateDropdownNama(metode);
 
@@ -41,12 +41,10 @@ function lanjutFormDebet(metode) {
         judul.innerText = '🤝 PENDAPATAN KONSINYASI';
         bKonsinyasi.classList.remove('hidden');
         bLangsung.classList.add('hidden');
-        if (wOngkir) wOngkir.classList.add('hidden');
     } else {
         judul.innerText = '💵 PEMBAYARAN TUNAI';
         bKonsinyasi.classList.add('hidden');
         bLangsung.classList.remove('hidden');
-        if (wOngkir) wOngkir.classList.remove('hidden');
         updateOpsiUnitLangsung();
     }
     openModal('modalDebet');
@@ -70,9 +68,7 @@ function updateOpsiUnitLangsung() {
 function hitungTotalDebet() {
     let qty = cleanNumber(document.getElementById('debetQty').value);
     let harga = cleanRupiah(document.getElementById('debetHargaSatuan').value);
-    const metodePenjualan = document.getElementById('debetMetodePenjualan').value;
-    let ongkir = (metodePenjualan === 'Konsinyasi') ? 0 : cleanRupiah(document.getElementById('debetOngkir') ? document.getElementById('debetOngkir').value : '0');
-    let total = (qty * harga) + ongkir;
+    let total = (qty * harga);
     document.getElementById('debetTotalUangVisual').value = total > 0 ? total.toLocaleString('id-ID') : '';
 }
 
@@ -93,7 +89,6 @@ function simpanDebet(e) {
     const nama = document.getElementById('debetPilihNama').value || 'Tanpa Nama';
     const qty = cleanNumber(document.getElementById('debetQty').value);
     const harga = cleanRupiah(document.getElementById('debetHargaSatuan').value);
-    const ongkir = (metodePenjualan === 'Konsinyasi') ? 0 : cleanRupiah(document.getElementById('debetOngkir') ? document.getElementById('debetOngkir').value : '0');
     const detail = document.getElementById('debetKeteranganTambahan').value.trim();
 
     if (qty * harga === 0) return alert('Qty dan Harga tidak boleh kosong!');
@@ -103,7 +98,11 @@ function simpanDebet(e) {
 
     if (metodePenjualan === 'Konsinyasi') {
         stokTarget = document.getElementById('konsinyasiVarian').value;
-        tipeCetak = `${stokTarget} (Pack)`;
+        if (stokTarget === 'Kerupuk 5.000') {
+            tipeCetak = `${stokTarget} (Pcs)`;
+        } else {
+            tipeCetak = `${stokTarget} (Pack)`;
+        }
     } else {
         let kond = document.getElementById('langsungKondisi').value;
         let unit = document.getElementById('langsungUnit').value;
@@ -123,10 +122,9 @@ function simpanDebet(e) {
 
     let tag = metodePenjualan === 'Konsinyasi' ? '[Titip]' : '[Tunai]';
     let ketFinal = `${tag} ${nama} - ${qty} ${tipeCetak} [${metodeBayar}]`;
-    if (ongkir > 0) ketFinal += ` (+ Ongkir: Rp ${ongkir.toLocaleString('id-ID')})`;
     if (detail) ketFinal += ` (${detail})`;
 
-    let totalDebet = (qty * harga) + ongkir;
+    let totalDebet = (qty * harga);
 
     globalState.listBukuKas.push({
         id: Date.now(),
@@ -145,29 +143,16 @@ function simpanDebet(e) {
 // SIMPAN KREDIT (UANG KELUAR)
 // ============================================
 
-/**
- * Toggle tampilan dropdown ukuran plastik.
- * FIX: Fungsi ini sebelumnya hilang dari kode lama.
- */
-function gantiKategoriKredit() {
-    const kat = document.getElementById('kreditKategori').value;
-    const wrapper = document.getElementById('wrapperUkuranPlastik');
-    if (kat === 'Plastik') {
-        wrapper.classList.remove('hidden');
-    } else {
-        wrapper.classList.add('hidden');
-    }
+function bukaFormKredit() {
+    document.getElementById('kreditTanggal').value = new Date().toISOString().split('T')[0];
+    document.getElementById('kreditKategori').value = 'Kulit Mentah';
+    document.getElementById('kreditVolumeBeli').value = '';
+    document.getElementById('kreditKeteranganTambahan').value = '';
+    document.getElementById('kreditJumlahUang').value = '';
+    openModal('modalKredit');
 }
 
-function togglePlastikCustom() {
-    const val = document.getElementById('kreditUkuranPlastik').value;
-    const wrapper = document.getElementById('wrapperPlastikCustom');
-    if (val === '__custom__') {
-        wrapper.classList.remove('hidden');
-    } else {
-        wrapper.classList.add('hidden');
-    }
-}
+
 
 function simpanKredit(e) {
     e.preventDefault();
@@ -185,17 +170,13 @@ function simpanKredit(e) {
 
     if (nominal === 0) return alert('Nominal tidak boleh kosong!');
 
-    let namaBrg = kat === 'Plastik' ? document.getElementById('kreditUkuranPlastik').value : kat;
-    if (namaBrg === '__custom__') {
-        namaBrg = document.getElementById('kreditPlastikCustom').value.trim();
-        if (!namaBrg) return alert('Nama plastik baru wajib diisi!');
-    }
+    let namaBrg = kat;
     
     let logGudangText = '';
 
     if (kat !== 'Lainnya' && vol > 0) {
         if (globalState.databaseStok[namaBrg] === undefined) {
-            globalState.databaseStok[namaBrg] = 0; // Initialize new custom plastic
+            globalState.databaseStok[namaBrg] = 0; // Initialize new custom item
         }
         globalState.databaseStok[namaBrg] += vol;
         logGudangText = `📥 Masuk Bahan Belanja: ${namaBrg} +${vol}${satuan}`;
@@ -286,9 +267,11 @@ async function tutupBukuBulanan() {
     const namaBulan = await customPrompt('Ketik nama bulan (Contoh: Juni 2026):');
     if (!namaBulan) return;
 
+    let barisArsip = [];
     globalState.listBukuKas.forEach(row => {
         row.is_arsip = 1;
         row.nama_bulan_arsip = namaBulan;
+        barisArsip.push(row);
     });
 
     const now = new Date();
@@ -303,7 +286,10 @@ async function tutupBukuBulanan() {
         kredit: 0
     };
 
-    globalState.listBukuKas = [sisaRow];
+    // Sertakan baris arsip agar disinkronkan (is_arsip=1 akan tetap masuk DB)
+    let payloadTutupBuku = [...barisArsip, sisaRow];
+    
+    globalState.listBukuKas = payloadTutupBuku;
     globalState.akumulasiPakai = { mentah: 0, minyak: 0, gas: 0 };
 
     kirimStateKeMySQL(`🔒 Sistem: Tutup buku dan pengarsipan untuk periode ${namaBulan}`);

@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link rel="stylesheet" href="public/css/app.css">
+    <link rel="stylesheet" href="public/css/app.css?v=<?= time() ?>">
 </head>
 <body class="bg-gray-100 font-sans antialiased text-gray-900 text-sm overflow-x-hidden no-scrollbar">
 
@@ -37,12 +37,12 @@
     </div>
 
     <!-- JavaScript Modules -->
-    <script src="public/js/helpers.js"></script>
-    <script src="public/js/app.js"></script>
-    <script src="public/js/kas.js"></script>
-    <script src="public/js/gudang.js"></script>
-    <script src="public/js/mitra.js"></script>
-    <script src="public/js/arsip.js"></script>
-    <script src="public/js/dss.js"></script>
+    <script src="public/js/helpers.js?v=<?= time() ?>"></script>
+    <script src="public/js/app.js?v=<?= time() ?>"></script>
+    <script src="public/js/kas.js?v=<?= time() ?>"></script>
+    <script src="public/js/gudang.js?v=<?= time() ?>"></script>
+    <script src="public/js/mitra.js?v=<?= time() ?>"></script>
+    <script src="public/js/arsip.js?v=<?= time() ?>"></script>
+    <script src="public/js/dss.js?v=<?= time() ?>"></script>
 </body>
 </html>

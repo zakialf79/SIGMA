@@ -86,11 +86,7 @@
                 </div>
             </div>
 
-            <!-- Ongkir -->
-            <div id="wrapperDebetOngkir" class="p-3.5 bg-amber-50/50 rounded-2xl border border-amber-200">
-                <label class="block text-[10px] font-black text-amber-700 uppercase tracking-wider mb-1">🚚 Ongkir / Biaya Kirim (Rp) <span class="text-gray-400 font-normal normal-case">— opsional</span></label>
-                <input type="text" id="debetOngkir" placeholder="0" oninput="formatInputRupiah(this); hitungTotalDebet()" class="w-full p-2.5 border border-amber-300 rounded-xl text-base font-black text-center focus:outline-amber-500">
-            </div>
+
 
             <div class="grid grid-cols-5 gap-3 items-end">
                 <div class="col-span-3">

@@ -57,7 +57,7 @@
         <p class="text-2xl mb-1">📥</p>
         <p class="font-black text-xs uppercase tracking-wider">Uang Masuk</p>
     </button>
-    <button type="button" onclick="openModal('modalKredit')" class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-2xl shadow-md active:scale-95 text-center cursor-pointer transition-all btn-press">
+    <button type="button" onclick="bukaFormKredit()" class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-2xl shadow-md active:scale-95 text-center cursor-pointer transition-all btn-press">
         <p class="text-2xl mb-1">📤</p>
         <p class="font-black text-xs uppercase tracking-wider">Uang Keluar</p>
     </button>
