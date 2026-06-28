@@ -13,6 +13,7 @@
         
         <div class="w-full max-w-sm text-center space-y-6 bg-white/10 p-8 rounded-3xl backdrop-blur-md shadow-xl border border-white/20">
             <div>
+                <img src="public/img/logo.png" alt="Logo SIGMA" class="h-28 mx-auto mb-4 object-contain drop-shadow-xl" onerror="this.style.display='none'">
                 <h1 class="text-4xl font-black tracking-tight"><span class="text-white">SIGM</span><span class="text-yellow-400">A</span></h1>
                 <p class="text-xs text-cyan-100 mt-1">Sistem Integrasi Gudang dan Manajemen Keuangan</p>
             </div>
