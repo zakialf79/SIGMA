@@ -60,5 +60,63 @@
             </div>
             <div class="bg-blue-50 border-l-4 border-blue-500 p-2.5 rounded-r-lg text-[10px] text-blue-800 font-medium" id="aiTrendPendapatan"></div>
         </div>
+
+        <hr class="border-gray-100">
+
+        <!-- 5. Kalkulator HPP Cerdas -->
+        <div class="space-y-3 bg-gradient-to-br from-amber-50 to-orange-50/50 p-4 rounded-3xl border border-amber-200/60 shadow-sm mt-4">
+            <h4 class="font-black text-xs text-amber-800 uppercase tracking-wider flex items-center gap-1">
+                <span>🧮</span> 5. Kalkulator HPP & Simulasi Laba
+            </h4>
+            <p class="text-[10px] text-amber-700 font-medium leading-relaxed mb-2">Simulasikan Harga Pokok Penjualan (HPP) berdasarkan harga pasar bahan baku dan rasio pemakaian riil dari gudang Anda.</p>
+            
+            <div class="grid grid-cols-2 gap-2">
+                <div class="space-y-1">
+                    <label class="block text-[9px] font-black text-gray-600 uppercase">Harga 1 Kg Kulit Mentah</label>
+                    <input type="text" id="hppHargaKulit" onkeyup="formatInputRupiah(this)" class="w-full p-2.5 border border-amber-200 rounded-xl text-xs font-bold text-gray-700 focus:outline-amber-400" placeholder="Rp">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[9px] font-black text-gray-600 uppercase">Hasil per 1 Kg (Bungkus)</label>
+                    <input type="number" id="hppBungkus" class="w-full p-2.5 border border-amber-200 rounded-xl text-xs font-bold text-gray-700 focus:outline-amber-400" placeholder="Pcs">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[9px] font-black text-gray-600 uppercase">Harga Minyak Goreng /Kg</label>
+                    <input type="text" id="hppHargaMinyak" onkeyup="formatInputRupiah(this)" class="w-full p-2.5 border border-amber-200 rounded-xl text-xs font-bold text-gray-700 focus:outline-amber-400" placeholder="Rp">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[9px] font-black text-gray-600 uppercase">Harga Gas /Tabung</label>
+                    <input type="text" id="hppHargaGas" onkeyup="formatInputRupiah(this)" class="w-full p-2.5 border border-amber-200 rounded-xl text-xs font-bold text-gray-700 focus:outline-amber-400" placeholder="Rp">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[9px] font-black text-gray-600 uppercase">Harga 1 Lembar Plastik</label>
+                    <input type="text" id="hppPlastik" onkeyup="formatInputRupiah(this)" class="w-full p-2.5 border border-amber-200 rounded-xl text-xs font-bold text-gray-700 focus:outline-amber-400" placeholder="Rp">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[9px] font-black text-gray-600 uppercase">Biaya Bumbu per Kg</label>
+                    <input type="text" id="hppBumbu" onkeyup="formatInputRupiah(this)" class="w-full p-2.5 border border-amber-200 rounded-xl text-xs font-bold text-gray-700 focus:outline-amber-400" placeholder="Rp">
+                </div>
+            </div>
+            
+            <div class="space-y-1 mt-2">
+                <label class="block text-[9px] font-black text-emerald-700 uppercase">Harga Jual per Bungkus Saat Ini</label>
+                <input type="text" id="hppJual" onkeyup="formatInputRupiah(this)" class="w-full p-2.5 border-2 border-emerald-300 rounded-xl text-xs font-black text-emerald-800 focus:outline-emerald-500 bg-emerald-50/30" placeholder="Rp">
+            </div>
+
+            <button type="button" onclick="hitungHPP()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs p-3 rounded-xl shadow-md transition-all active:scale-95 mt-3 cursor-pointer btn-press">
+                🧮 Hitung HPP & Margin
+            </button>
+
+            <div id="hasilHPP" class="hidden flex-col gap-2 mt-4 p-4 bg-white border border-amber-200 rounded-2xl shadow-sm">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">HPP Pokok / Bungkus:</span>
+                    <span class="text-base font-black text-red-600" id="resHPP">Rp 0</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Laba Bersih / Bungkus:</span>
+                    <span class="text-base font-black text-emerald-600" id="resMargin">Rp 0 (0%)</span>
+                </div>
+                <div class="bg-blue-50/70 border-l-4 border-blue-500 p-3 rounded-r-xl text-[10px] text-blue-900 font-medium leading-relaxed mt-1" id="resRekomendasi"></div>
+            </div>
+        </div>
     </div>
 </div>

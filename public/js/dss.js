@@ -203,3 +203,81 @@ function bukaStatistikDSS() {
         }
     }, 50);
 }
+
+// ============================================
+// KALKULATOR HPP & MARGIN
+// ============================================
+
+function hitungHPP() {
+    const hargaKulit = cleanRupiah(document.getElementById('hppHargaKulit').value);
+    const hasilBungkus = cleanNumber(document.getElementById('hppBungkus').value);
+    const hargaMinyak = cleanRupiah(document.getElementById('hppHargaMinyak').value);
+    const hargaGas = cleanRupiah(document.getElementById('hppHargaGas').value);
+    const hargaPlastik = cleanRupiah(document.getElementById('hppPlastik').value);
+    const hargaBumbu = cleanRupiah(document.getElementById('hppBumbu').value);
+    const hargaJual = cleanRupiah(document.getElementById('hppJual').value);
+
+    if (hasilBungkus <= 0 || hargaKulit <= 0) {
+        showToast('Harga Kulit Mentah dan Hasil Bungkus wajib diisi!', '⚠️', 3000);
+        return;
+    }
+
+    // Hitung Rasio Riil dari Gudang
+    let totMentah = cleanNumber(globalState.akumulasiPakai.mentah) || 0;
+    let totMinyak = cleanNumber(globalState.akumulasiPakai.minyak) || 0;
+    let totGas = cleanNumber(globalState.akumulasiPakai.gas) || 0;
+
+    // Default rasio jika data gudang masih kosong (Asumsi normal: 1Kg Kulit butuh 0.3Kg Minyak & 0.1 Tabung Gas)
+    let rasioMinyak = totMentah > 0 ? (totMinyak / totMentah) : 0.3;
+    let rasioGas = totMentah > 0 ? (totGas / totMentah) : 0.1;
+
+    // Biaya proporsional per 1 Kg adonan kulit
+    let costMinyakPerKg = rasioMinyak * hargaMinyak;
+    let costGasPerKg = rasioGas * hargaGas;
+    
+    // Total Biaya untuk 1 Kg adonan utuh
+    let totalBiaya1Kg = hargaKulit + costMinyakPerKg + costGasPerKg + hargaBumbu;
+
+    // HPP per 1 bungkus
+    let hppIsi = totalBiaya1Kg / hasilBungkus;
+    let hppFinal = Math.round(hppIsi + hargaPlastik);
+
+    let labaRp = hargaJual - hppFinal;
+    let marginPct = hargaJual > 0 ? Math.round((labaRp / hargaJual) * 100) : 0;
+
+    // Tampilkan Hasil
+    document.getElementById('resHPP').innerText = 'Rp ' + hppFinal.toLocaleString('id-ID');
+    
+    const elMargin = document.getElementById('resMargin');
+    elMargin.innerText = `Rp ${labaRp.toLocaleString('id-ID')} (${marginPct}%)`;
+    elMargin.className = `text-base font-black ${labaRp > 0 ? 'text-emerald-600' : 'text-red-600'}`;
+
+    // Analisis AI
+    let aiText = '';
+    if (labaRp < 0) {
+        aiText = `⚠️ <b>RUGI BESAR!</b> Anda rugi Rp ${Math.abs(labaRp).toLocaleString('id-ID')} setiap menjual 1 bungkus. Harga jual terlalu murah! Pertimbangkan untuk menaikkan harga jual menjadi minimal Rp ${(hppFinal + 300).toLocaleString('id-ID')} atau kurangi isi kerupuk per bungkusnya!`;
+    } else if (marginPct < 20) {
+        aiText = `⚠️ <b>Margin Tipis (${marginPct}%)</b>. Keuntungan Rp ${labaRp.toLocaleString('id-ID')} per bungkus terlalu kecil untuk menutupi biaya tenaga kerja dan resiko kerupuk rusak. Idealnya margin kerupuk minimal 30%.`;
+    } else if (marginPct >= 20 && marginPct <= 45) {
+        aiText = `✅ <b>Margin Sehat (${marginPct}%)</b>. Harga jual sudah ideal dan masuk akal. Pertahankan efisiensi minyak di gudang.`;
+    } else {
+        aiText = `🌟 <b>Margin Sangat Bagus (${marginPct}%)</b>. Bisnis menguntungkan! Jaga kualitas rasa agar pelanggan tidak lari.`;
+    }
+
+    // Info tambahan rasio
+    if (totMentah > 0) {
+        aiText += `<br><br><span class="text-gray-500 text-[8px]">*Info: AI menggunakan rasio riil gudang Anda (1Kg Kulit menghabiskan ${rasioMinyak.toFixed(2)}Kg Minyak & ${rasioGas.toFixed(2)} Tbg Gas).</span>`;
+    }
+
+    document.getElementById('resRekomendasi').innerHTML = aiText;
+    
+    const resBox = document.getElementById('hasilHPP');
+    resBox.classList.remove('hidden');
+    resBox.classList.add('flex');
+    
+    // Auto-scroll ke bawah
+    setTimeout(() => {
+        const modal = document.getElementById('modalDSS').querySelector('.modal-content');
+        modal.scrollTo({ top: modal.scrollHeight, behavior: 'smooth' });
+    }, 100);
+}
