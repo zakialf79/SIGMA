@@ -39,6 +39,28 @@
                 </label>
             </div>
 
+            <!-- Backup Database -->
+            <div class="flex flex-col border-t border-gray-100 pt-5 space-y-2">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-1">Backup Data (Migrasi Hosting)</h3>
+                    <p class="text-[10px] text-gray-500 leading-relaxed">Download seluruh data (buku kas & gudang) untuk persiapan pindah server (misal ke Niagahoster/Hostinger) jika masa percobaan di Railway habis.</p>
+                </div>
+                <button type="button" onclick="downloadDatabaseSQL()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-xl text-xs flex justify-center items-center gap-2 cursor-pointer shadow-md transition-all active:scale-95 btn-press mt-1">
+                    📦 Download Backup SQL
+                </button>
+            </div>
+
+            <!-- Instal PWA (Disembunyikan secara default, muncul via JS) -->
+            <div id="btnInstallPWA" class="hidden flex-col border-t border-gray-100 pt-5 space-y-2">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-1">Install Aplikasi SIGMA 📱</h3>
+                    <p class="text-[10px] text-gray-500 leading-relaxed">Pasang aplikasi ini di layar utama HP ibuk agar bisa dibuka langsung tanpa mengetik link di Google Chrome.</p>
+                </div>
+                <button type="button" onclick="installPWA()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold p-3 rounded-xl text-xs flex justify-center items-center gap-2 cursor-pointer shadow-md transition-all active:scale-95 btn-press mt-1">
+                    ⬇️ Install ke Layar Utama (Home Screen)
+                </button>
+            </div>
+
         </div>
 
     </div>

@@ -1,5 +1,5 @@
 /**
- * KrispiKas - Buku Kas Module
+ * SIGMA  - Buku Kas Module
  * 
  * Mengelola catatan debet (uang masuk) dan kredit (uang keluar).
  */
@@ -16,10 +16,10 @@ async function inputSisaSaldo() {
     closeModal('modalPilihanUangMasuk');
     const nominal = await customPrompt('Masukkan nominal Sisa Saldo / Modal Awal (Rp):');
     if (!nominal) return;
-    
+
     const cleanNominal = cleanRupiah(nominal);
     if (cleanNominal <= 0) return;
-    
+
     const d = new Date();
     const tglVisual = `${d.getDate()}/${d.getMonth() + 1}`;
     const tglRaw = d.toISOString().split('T')[0];
@@ -113,10 +113,10 @@ function autoIsiHargaKonsinyasi() {
 
 function simpanDebet(e) {
     e.preventDefault();
-    
+
     const tglRaw = document.getElementById('debetTanggal').value;
     if (!tglRaw) return alert('Isi Tanggal!');
-    
+
     const d = new Date(tglRaw);
     const tglVisual = `${d.getDate()}/${d.getMonth() + 1}`;
     const metodePenjualan = document.getElementById('debetMetodePenjualan').value;
@@ -185,7 +185,7 @@ function simpanDebet(e) {
 
 function bukaFormKredit(kategoriTarget = 'Kulit Mentah') {
     document.getElementById('kreditTanggal').value = new Date().toISOString().split('T')[0];
-    
+
     const select = document.getElementById('kreditKategori');
     let exists = false;
     for (let i = 0; i < select.options.length; i++) {
@@ -194,7 +194,7 @@ function bukaFormKredit(kategoriTarget = 'Kulit Mentah') {
     if (!exists) {
         select.innerHTML += `<option value="${kategoriTarget}">📦 ${kategoriTarget}</option>`;
     }
-    
+
     document.getElementById('kreditKategori').value = kategoriTarget;
     document.getElementById('kreditVolumeBeli').value = '';
     document.getElementById('kreditKeteranganTambahan').value = '';
@@ -206,10 +206,10 @@ function bukaFormKredit(kategoriTarget = 'Kulit Mentah') {
 
 function simpanKredit(e) {
     e.preventDefault();
-    
+
     const tglRaw = document.getElementById('kreditTanggal').value;
     if (!tglRaw) return alert('Isi Tanggal!');
-    
+
     const d = new Date(tglRaw);
     const tglVisual = `${d.getDate()}/${d.getMonth() + 1}`;
     const kat = document.getElementById('kreditKategori').value;
@@ -221,7 +221,7 @@ function simpanKredit(e) {
     if (nominal === 0) return alert('Nominal tidak boleh kosong!');
 
     let namaBrg = kat;
-    
+
     let logGudangText = '';
 
     if (kat !== 'Lainnya' && vol > 0) {
@@ -282,6 +282,38 @@ function updateTabelKas() {
     document.getElementById('dashSaldoAkhir').innerText = 'Rp ' + runningSaldo.toLocaleString('id-ID');
 }
 
+// ============================================
+// FILTER PENCARIAN KAS
+// ============================================
+function filterTabelKas() {
+    const input = document.getElementById('searchKas');
+    if (!input) return;
+
+    const keyword = input.value.toLowerCase();
+    const rows = document.querySelectorAll('#bodyTabelKas tr');
+    let hasResult = false;
+
+    rows.forEach(row => {
+        if (row.children.length > 1) { // abaikan baris keterangan kosong
+            const textContent = row.textContent.toLowerCase();
+            if (textContent.includes(keyword)) {
+                row.style.display = '';
+                hasResult = true;
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+
+    const tbody = document.getElementById('bodyTabelKas');
+    const existingEmpty = document.getElementById('rowEmptySearch');
+    if (existingEmpty) existingEmpty.remove();
+
+    if (!hasResult && rows.length > 0) {
+        tbody.insertAdjacentHTML('beforeend', '<tr id="rowEmptySearch"><td colspan="6" class="text-center py-6 text-gray-400 font-bold">Data tidak ditemukan.</td></tr>');
+    }
+}
+
 async function hapusSatuBaris(id) {
     const ok = await customConfirm('Hapus baris catatan kas ini?', '🗑️', 'Ya, Hapus');
     if (ok) {
@@ -338,7 +370,7 @@ async function tutupBukuBulanan() {
 
     // Sertakan baris arsip agar disinkronkan (is_arsip=1 akan tetap masuk DB)
     let payloadTutupBuku = [...barisArsip, sisaRow];
-    
+
     globalState.listBukuKas = payloadTutupBuku;
     globalState.akumulasiPakai = { mentah: 0, minyak: 0, gas: 0 };
     globalState.historiGudang = [];

@@ -9,6 +9,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="public/css/app.css?v=<?= time() ?>">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="public/img/icon-512.png">
 </head>
 <body class="bg-gray-100 font-sans antialiased text-gray-900 text-sm overflow-x-hidden no-scrollbar">
 
@@ -44,5 +47,13 @@
     <script src="public/js/mitra.js?v=<?= time() ?>"></script>
     <script src="public/js/arsip.js?v=<?= time() ?>"></script>
     <script src="public/js/dss.js?v=<?= time() ?>"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW err', err));
+            });
+        }
+    </script>
 </body>
 </html>

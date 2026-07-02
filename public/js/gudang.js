@@ -76,6 +76,21 @@ async function editManualStok(namaBaku) {
 }
 
 // ============================================
+// EDIT AKUMULASI PEMAKAIAN MANUAL
+// ============================================
+
+async function editManualAkumulasi(jenis) {
+    const namaVisual = jenis === 'mentah' ? 'Kulit Mentah' : (jenis === 'minyak' ? 'Minyak' : 'Gas');
+    const satuan = jenis === 'gas' ? 'Tbg' : 'Kg';
+    const nilaiLama = globalState.akumulasiPakai[jenis] || 0;
+    const nilaiBaru = await customPrompt(`Ubah hitungan akumulasi pemakaian manual untuk [${namaVisual}] bulan ini (${satuan}):`, nilaiLama);
+    if (nilaiBaru !== null && !isNaN(nilaiBaru) && nilaiBaru !== '') {
+        globalState.akumulasiPakai[jenis] = parseFloat(nilaiBaru);
+        kirimStateKeMySQL(`✏️ Koreksi Manual: Akumulasi ${namaVisual} disesuaikan ke ${nilaiBaru}`);
+    }
+}
+
+// ============================================
 // HAPUS JENIS BAHAN BAKU
 // ============================================
 
@@ -111,21 +126,9 @@ function updateVisualStok() {
     document.getElementById('totalPakaiMinyak').innerText = globalState.akumulasiPakai.minyak;
     document.getElementById('totalPakaiGas').innerText = globalState.akumulasiPakai.gas;
 
-    // Render daftar lengkap stok di modal gudang & siapkan opsi
+    // Render daftar lengkap stok di modal gudang
     let htmlList = '';
     
-    let opsiKategori = `
-        <option value="Kulit Mentah">🥩 Kulit Mentah</option>
-        <option value="Minyak">💧 Minyak Goreng</option>
-        <option value="Gas">🔥 Gas Tabung</option>
-        <option value="Plastik 9x16">🛍️ Plastik 9x16</option>
-        <option value="Plastik 8x13">🛍️ Plastik 8x13</option>
-        <option value="Plastik 35x55">🛍️ Plastik 35x55</option>
-        <option value="Ziplock 20x29">🛍️ Ziplock 20x29</option>
-    `;
-
-    let defaultKategori = ['Kulit Mentah', 'Minyak', 'Gas', 'Plastik 9x16', 'Plastik 8x13', 'Plastik 35x55', 'Ziplock 20x29'];
-
     for (const [barang, qty] of Object.entries(globalState.databaseStok)) {
         let satuan = (barang === 'Gas') ? 'Tbg' : 'Kg';
         
@@ -143,22 +146,9 @@ function updateVisualStok() {
                 ${tombolHapus}
             </div>
         </div>`;
-
-        if (!defaultKategori.includes(barang)) {
-            opsiKategori += `<option value="${barang}">📦 ${barang}</option>`;
-        }
     }
     
-    opsiKategori += `<option value="Lainnya">✏️ Lainnya</option>`;
-
     document.getElementById('listStokLengkap').innerHTML = htmlList;
-
-    const selectKategori = document.getElementById('kreditKategori');
-    if (selectKategori) {
-        let currKat = selectKategori.value;
-        selectKategori.innerHTML = opsiKategori;
-        if(opsiKategori.includes(`"${currKat}"`)) selectKategori.value = currKat;
-    }
 
     // Render histori gudang
     let htmlHistori = '';

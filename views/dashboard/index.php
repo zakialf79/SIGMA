@@ -65,9 +65,12 @@
 
 <!-- Tabel Buku Kas -->
 <section id="areaCetakBukuKas" class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-1">
-    <div class="p-4 bg-gray-50/70 border-b border-gray-100 flex justify-between items-center id-anti-cetak">
+    <div class="p-4 bg-gray-50/70 border-b border-gray-100 flex flex-col sm:flex-row justify-between sm:items-center gap-3 id-anti-cetak">
         <h3 class="text-xs font-black text-gray-700 uppercase tracking-wider">Tabel Arus Kas</h3>
-        <button type="button" onclick="tutupBukuBulanan()" class="text-[10px] bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl font-bold active:scale-95 cursor-pointer shadow transition-all btn-press">⚠️ Tutup Buku</button>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+            <input type="text" id="searchKas" onkeyup="filterTabelKas()" placeholder="🔍 Cari baris (nama, tgl, dll)..." class="w-full sm:w-48 p-2 text-xs border border-gray-200 rounded-xl focus:outline-blue-500 font-medium text-gray-700">
+            <button type="button" onclick="tutupBukuBulanan()" class="text-[10px] bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl font-bold active:scale-95 cursor-pointer shadow transition-all btn-press whitespace-nowrap">⚠️ Tutup Buku</button>
+        </div>
     </div>
     <div class="hidden show-on-pdf p-4 text-center border-b-2 border-gray-800">
         <h2 class="text-xl font-black uppercase">Laporan Buku Kas SIGMA</h2>

@@ -33,18 +33,18 @@
                     <span>📊</span> TOTAL AKUMULASI BAHAN TERPAKAI (BULAN INI)
                 </h4>
                 <div class="grid grid-cols-3 gap-2 text-center pt-1">
-                    <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Mentah</p>
+                    <button type="button" onclick="editManualAkumulasi('mentah')" class="bg-white/5 p-2 rounded-xl border border-white/5 hover:bg-white/10 active:scale-95 transition-all cursor-pointer text-center block w-full focus:outline-none btn-press" title="Koreksi Mentah">
+                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Mentah ✏️</p>
                         <p class="text-base font-black text-amber-400"><span id="totalPakaiMentah">0</span> <span class="text-[9px] text-gray-300 font-normal">Kg</span></p>
-                    </div>
-                    <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Minyak</p>
+                    </button>
+                    <button type="button" onclick="editManualAkumulasi('minyak')" class="bg-white/5 p-2 rounded-xl border border-white/5 hover:bg-white/10 active:scale-95 transition-all cursor-pointer text-center block w-full focus:outline-none btn-press" title="Koreksi Minyak">
+                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Minyak ✏️</p>
                         <p class="text-base font-black text-teal-400"><span id="totalPakaiMinyak">0</span> <span class="text-[9px] text-gray-300 font-normal">Kg</span></p>
-                    </div>
-                    <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Gas</p>
+                    </button>
+                    <button type="button" onclick="editManualAkumulasi('gas')" class="bg-white/5 p-2 rounded-xl border border-white/5 hover:bg-white/10 active:scale-95 transition-all cursor-pointer text-center block w-full focus:outline-none btn-press" title="Koreksi Gas">
+                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Gas ✏️</p>
                         <p class="text-base font-black text-orange-400"><span id="totalPakaiGas">0</span> <span class="text-[9px] text-gray-300 font-normal">Tbg</span></p>
-                    </div>
+                    </button>
                 </div>
             </div>
 

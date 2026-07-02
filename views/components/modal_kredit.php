@@ -13,18 +13,18 @@
                 </div>
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1">Kategori Belanja</label>
-                    <select id="kreditKategori" class="w-full p-2.5 border border-gray-200 rounded-xl bg-white font-bold text-xs focus:outline-red-500">
+                    <select id="kreditKategori" onchange="toggleKreditVolumeInput()" class="w-full p-2.5 border border-gray-200 rounded-xl bg-white font-bold text-xs focus:outline-red-500">
                         <option value="Kulit Mentah">🥩 Kulit Mentah</option>
                         <option value="Minyak">💧 Minyak Goreng</option>
                         <option value="Gas">🔥 Gas Tabung</option>
-                        <option value="Lainnya">✏️ Lainnya</option>
+                        <option value="Plastik">🛍️ Plastik</option>
+                        <option value="Upah">💵 Upah</option>
+                        <option value="Tabungan">🐷 Tabungan</option>
                     </select>
                 </div>
             </div>
             
-
-
-            <div class="p-4 bg-red-50 rounded-2xl border border-red-100">
+            <div id="containerKreditVolume" class="p-4 bg-red-50 rounded-2xl border border-red-100">
                 <label class="block text-[10px] font-black text-red-800 uppercase tracking-wider mb-1">Volume Dibeli (Masuk Gudang)</label>
                 <div class="flex gap-2 items-center">
                     <input type="number" id="kreditVolumeBeli" placeholder="Misal: 5" step="any" class="flex-1 p-2.5 border border-gray-200 bg-white rounded-xl text-xs font-bold text-center focus:outline-red-500">

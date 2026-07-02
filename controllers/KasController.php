@@ -100,4 +100,45 @@ class KasController
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
+    /**
+     * GET: Download Backup SQL Database (Untuk Migrasi Server)
+     * Endpoint: ?action=backup_db
+     */
+    public function backupDb(): void
+    {
+        $db = Database::getInstance()->getConnection();
+        $tables = ['buku_kas', 'gudang_stok', 'histori_gudang', 'akumulasi_pakai', 'mitra'];
+        
+        $sql = "-- Backup Database SIGMA\n";
+        $sql .= "-- Tanggal: " . date('Y-m-d H:i:s') . "\n\n";
+        $sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
+
+        foreach ($tables as $table) {
+            $sql .= "DROP TABLE IF EXISTS `$table`;\n";
+            $stmt = $db->query("SHOW CREATE TABLE `$table`");
+            $row = $stmt->fetch(PDO::FETCH_NUM);
+            $sql .= $row[1] . ";\n\n";
+
+            $stmt = $db->query("SELECT * FROM `$table`");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($rows) > 0) {
+                $sql .= "INSERT INTO `$table` VALUES \n";
+                $values = [];
+                foreach ($rows as $r) {
+                    $vals = array_map(function ($val) use ($db) {
+                        return is_null($val) ? 'NULL' : $db->quote($val);
+                    }, $r);
+                    $values[] = "(" . implode(", ", $vals) . ")";
+                }
+                $sql .= implode(",\n", $values) . ";\n\n";
+            }
+        }
+        $sql .= "SET FOREIGN_KEY_CHECKS=1;\n";
+
+        header('Content-Type: application/sql');
+        header('Content-Disposition: attachment; filename="backup_sigma_' . date('Y-m-d') . '.sql"');
+        echo $sql;
+    }
 }

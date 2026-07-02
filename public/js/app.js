@@ -172,6 +172,45 @@ async function prosesLogout() {
 }
 
 // ============================================
+// BACKUP DATABASE
+// ============================================
+function downloadDatabaseSQL() {
+    window.open(`${API_URL}?action=backup_db`, '_blank');
+}
+
+// ============================================
+// INSTALASI PWA (APP)
+// ============================================
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent default mini-infobar
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Munculkan tombol di dalam Pengaturan
+    const installBtn = document.getElementById('btnInstallPWA');
+    if (installBtn) {
+        installBtn.classList.remove('hidden');
+        installBtn.classList.add('flex');
+    }
+});
+
+function installPWA() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User installed the app!');
+            }
+            deferredPrompt = null;
+        });
+    } else {
+        showToast("Tunggu sebentar atau coba lewat menu 'Add to Home Screen' Chrome Anda.", '📱', 3000);
+    }
+}
+
+// ============================================
 // PENGINGAT HARIAN
 // ============================================
 function cekPengingatHarian() {

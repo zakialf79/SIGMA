@@ -91,6 +91,13 @@ if (!empty($action)) {
                 $controller->getArsipBulan();
                 break;
 
+            // === BACKUP ===
+            case 'backup_db':
+                AuthMiddleware::check();
+                $controller = new KasController();
+                $controller->backupDb();
+                break;
+
             // === 404 ===
             default:
                 http_response_code(404);
